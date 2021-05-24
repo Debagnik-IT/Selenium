@@ -1,5 +1,6 @@
 package testcases;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
@@ -7,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import PageObject.bewakooftest2;
@@ -35,8 +37,8 @@ public class bewakoofsitetesting2 extends Base {
 		Log.info("driver setup closed");
 	}
 	
-	@Test
-	public void DefaultTest()
+	@Test(dataProvider="registerdata")
+	public void DefaultTest(String Email, String Password)
 	{
 		bewakooftest2 c1= new bewakooftest2(driver);
 		bewakooftest2 c2= new bewakooftest2(driver);
@@ -44,11 +46,17 @@ public class bewakoofsitetesting2 extends Base {
 		//bewakooftest2 c4= new bewakooftest2(driver);
 		c1.getClick_On_Loginpage().click();
 		c1.getClick_On_Email().click();
-		c2.getClick_On_EmailInput().sendKeys("debagnik16@gmail.com");
-		c3.getClick_On_Password().sendKeys("Papan@12345");
+		c2.getClick_On_EmailInput().sendKeys(Email);
+		c3.getClick_On_Password().sendKeys(Password);
 		//c4.getClick_On_Login().click();
 		
 		
+	}
+	
+	@DataProvider(name="registerdata")
+	public Object[][] getTestData() throws FileNotFoundException, IOException
+	{
+		return rc.readDataFromExcel(0);
 	}
 
 }
